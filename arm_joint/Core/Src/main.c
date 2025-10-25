@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
+#include "uart_comms.h"
 #include "as5600.h"
 #include "i2c_slave.h"
 /* USER CODE END Includes */
@@ -102,6 +103,7 @@ int main(void)
   // Start timer interrupt for sensor reading (100Hz - every 10ms)
   HAL_TIM_Base_Start_IT(&htim3);
 
+  log_info("Welcome to Debug mode\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
