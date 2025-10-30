@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -30,6 +31,7 @@
 #include "uart_comms.h"
 #include "as5600.h"
 #include "i2c_slave.h"
+#include "data_transfer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,6 +95,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_TIM2_Init();
@@ -100,10 +103,11 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   I2C_Slave_Init(&hi2c1);
+  uart_dma_init();
   // Start timer interrupt for sensor reading (100Hz - every 10ms)
   HAL_TIM_Base_Start_IT(&htim3);
 
-  log_info("Welcome to Debug mode\n");
+  log_info("Welcome to Debug mode\n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */

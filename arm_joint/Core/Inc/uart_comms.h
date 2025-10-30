@@ -3,8 +3,11 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "main.h"
 #include "usart.h"
+
+void uart_dma_init(void);
 
 void log_error(const char *format, ...);
 void log_info(const char *format, ...);

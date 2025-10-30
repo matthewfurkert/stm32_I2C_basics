@@ -4,12 +4,19 @@
 #include <string.h>
 #include "main.h"
 #include "uart_comms.h"
+#include "data_transfer.h"
 
-void update_sensor_data(uint8_t angle_msb, uint8_t angle_lsb);
-void update_sensor_status(uint8_t status);
-void process_received_data(void);
-void prepare_data_to_send(void);
-//void prepare_read_data(void);
+extern volatile uint8_t i2c_log_flags;
+
+#define FLAG_LISTEN			1
+#define FLAG_ADDR_MATCH_RX	2
+#define FLAG_ADDR_MATCH_TX	4
+#define FLAG_RX_CPLT		8
+#define FLAG_TX_CPLT		16
+#define FLAG_ERROR			128
+
+extern uint8_t last_size, last_dir, last_addr, last_rx_flag;
+
 void I2C_Slave_Init(I2C_HandleTypeDef *hi2c);
 
 

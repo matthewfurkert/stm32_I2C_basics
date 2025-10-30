@@ -4,6 +4,7 @@
 
 #include "main.h"
 #include "i2c.h"
+#include "data_transfer.h"
 
 // AS5600 I2C Address
 #define AS5600L_ADDR        0x40<<1

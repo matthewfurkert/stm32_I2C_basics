@@ -1,5 +1,4 @@
 #include "as5600.h"
-#include "i2c_slave.h"
 
 //SCL = PB6
 //SDA = PB7
@@ -28,3 +27,5 @@ void as5600_retrieve_status(void)
     update_sensor_status(status);
 
 }
+
+
