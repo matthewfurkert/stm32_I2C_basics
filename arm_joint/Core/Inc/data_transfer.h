@@ -14,6 +14,8 @@ void process_received_data(uint8_t address);
 void prepare_data_to_send(uint8_t address);
 void update_sensor_data(uint8_t angle_msb, uint8_t angle_lsb);
 void update_sensor_status(uint8_t status);
+uint8_t update_motor_direction(void);
+uint8_t update_motor_speed(void);
 
 extern uint8_t SENSOR_REGISTERS[10];
 extern uint8_t MOTOR_REGISTERS[10];

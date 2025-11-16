@@ -1,7 +1,5 @@
 #include "i2c_slave.h"
 
-volatile uint8_t i2c_log_flags = 0;
-
 uint8_t data_size;
 uint8_t data_direction;
 uint8_t data_address;
@@ -20,9 +18,9 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
 {
     UNUSED(AddrMatchCode);
 
+
     // Master is sending to slave (slave is receiving (RX))
     if (TransferDirection == I2C_DIRECTION_TRANSMIT) {
-    	i2c_log_flags |= FLAG_ADDR_MATCH_RX;					// For debugging
     	data_size = 0;
     	data_direction = 0;
     	data_address = 0;
@@ -31,7 +29,6 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
     }
     // Master is reading from slave (slave is transmitting (TX))
     else if (TransferDirection == I2C_DIRECTION_RECEIVE) {
-    	i2c_log_flags |= FLAG_ADDR_MATCH_TX;					// For debugging
     	if (data_size && data_direction && data_address) {
     		memset(slave_tx_buffer, 0, 6);
     		// Prepare data based on the previously received register address
@@ -57,7 +54,6 @@ void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t TransferDirection, ui
  */
 void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	i2c_log_flags |= FLAG_RX_CPLT; // For debugging
 
 	if (!data_direction) {
 		HAL_I2C_Slave_Seq_Receive_IT(hi2c, &data_direction, 1, I2C_NEXT_FRAME);
@@ -105,8 +101,6 @@ void HAL_I2C_SlaveRxCpltCallback(I2C_HandleTypeDef *hi2c)
  */
 void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	i2c_log_flags |= FLAG_TX_CPLT; // For debugging
-
 	if (data_size || data_direction || data_address) {
 	}
 
@@ -123,7 +117,6 @@ void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c)
  */
 void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-    i2c_log_flags |= FLAG_LISTEN;
 	// Re-enable listening mode
     HAL_I2C_EnableListen_IT(hi2c);
 }
@@ -139,7 +132,6 @@ void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *hi2c)
     // Handle errors and re-enable listening
 //	uint32_t errorcode = HAL_I2C_GetError(hi2c);
 //	log_error("Error code: %d \n\r", errorcode);
-	i2c_log_flags |= FLAG_ERROR;
 	HAL_I2C_EnableListen_IT(hi2c);
 }
 

@@ -29,8 +29,9 @@
 #include <string.h>
 #include <stdio.h>
 #include "uart_comms.h"
-#include "as5600.h"
 #include "i2c_slave.h"
+#include "as5600.h"
+#include "motor_driver.h"
 #include "data_transfer.h"
 /* USER CODE END Includes */
 
@@ -103,7 +104,6 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   I2C_Slave_Init(&hi2c1);
-  uart_dma_init();
   // Start timer interrupt for sensor reading (100Hz - every 10ms)
   HAL_TIM_Base_Start_IT(&htim3);
 
@@ -168,6 +168,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         // Read sensor data in interrupt
         as5600_retrieve_angle();
         as5600_retrieve_status();
+        set_motor_values();
     }
 }
 /* USER CODE END 4 */

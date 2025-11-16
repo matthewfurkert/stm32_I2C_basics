@@ -4,6 +4,7 @@
 //SDA = PB7
 
 uint8_t as5600_data[2];
+uint8_t as5600_status = 0;
 
 void as5600_retrieve_angle(void)
 {
@@ -12,19 +13,17 @@ void as5600_retrieve_angle(void)
     HAL_I2C_Mem_Read(&hi2c2, AS5600L_ADDR, AS5600L_RAW_ANGLE_H, 1, as5600_data, 2, 100);
 
     // Add angle to data register
-
     update_sensor_data(as5600_data[0], as5600_data[1]);
 
 }
 
 void as5600_retrieve_status(void)
 {
-    uint8_t status = 0;
 
-    HAL_I2C_Mem_Read(&hi2c2, AS5600L_ADDR, AS5600L_STATUS, 1, &status, 1, 100);
+    HAL_I2C_Mem_Read(&hi2c2, AS5600L_ADDR, AS5600L_STATUS, 1, &as5600_status, 1, 100);
 
-    status &= 0x38;
-    update_sensor_status(status);
+    as5600_status &= 0x38;
+    update_sensor_status(as5600_status);
 
 }
 

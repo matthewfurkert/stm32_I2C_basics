@@ -9,8 +9,7 @@
 
 #define SENSOR_STATUS		1
 #define SENSOR_RAW_ANGLE	3
-#define MOTOR_DIRECTION		5
-#define MOTOR_SPEED			6
+#define MOTOR_VALUES		5
 
 uint8_t slave_rx_buffer[6] = {0};
 uint8_t slave_tx_buffer[6] = {0};
@@ -25,13 +24,10 @@ uint8_t MOTOR_REGISTERS[10] = {0};
 void process_received_data(uint8_t address)
 {
     switch (address) {
-        case MOTOR_DIRECTION: // Motor direction register
+        case MOTOR_VALUES: // Motor data
             // Transfer the received data into the motor register
-            MOTOR_REGISTERS[0] = slave_rx_buffer[0];
-            break;
-
-        case MOTOR_SPEED: // Motor speed register
-            MOTOR_REGISTERS[5] = slave_rx_buffer[0];
+            MOTOR_REGISTERS[0] = slave_rx_buffer[0];	// Motor direction register
+            MOTOR_REGISTERS[1] = slave_rx_buffer[1];	// Motor speed register
             break;
 
         default:
@@ -83,5 +79,13 @@ void update_sensor_data(uint8_t angle_msb, uint8_t angle_lsb)
 void update_sensor_status(uint8_t status)
 {
     SENSOR_REGISTERS[0] = status;
+}
+
+uint8_t update_motor_direction(void) {
+	return MOTOR_REGISTERS[0];
+}
+
+uint8_t update_motor_speed(void) {
+	return MOTOR_REGISTERS[1];
 }
 
